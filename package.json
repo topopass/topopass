@@ -1,0 +1,64 @@
+{
+    "version": "1.0.0",
+    "license": "MIT",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.ts",
+    "files": [
+        "dist",
+        "src"
+    ],
+    "engines": {
+        "node": ">=10"
+    },
+    "scripts": {
+        "start": "tsdx watch",
+        "build": "tsdx build",
+        "test": "tsdx test",
+        "lint": "tsdx lint",
+        "prepare": "tsdx build",
+        "size": "size-limit",
+        "analyze": "size-limit --why"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "tsdx lint"
+        }
+    },
+    "prettier": {
+        "printWidth": 80,
+        "semi": true,
+        "singleQuote": true,
+        "trailingComma": "es5"
+    },
+    "name": "topopass",
+    "author": "Topodon",
+    "module": "dist/topopass.esm.js",
+    "size-limit": [
+        {
+            "path": "dist/topopass.cjs.production.min.js",
+            "limit": "10 KB"
+        },
+        {
+            "path": "dist/topopass.esm.js",
+            "limit": "10 KB"
+        }
+    ],
+    "devDependencies": {
+        "@size-limit/preset-small-lib": "^8.1.0",
+        "husky": "^8.0.2",
+        "mocha": "^10.1.0",
+        "size-limit": "^8.1.0",
+        "tsdx": "^0.14.1",
+        "tslib": "^2.4.1",
+        "typescript": "^3.9.10"
+    },
+    "dependencies": {
+        "@ethersproject/hdnode": "^5.7.0",
+        "@ethersproject/providers": "^5.7.2",
+        "@types/crypto-js": "^4.1.1",
+        "bcrypt": "^5.1.0",
+        "crypto-js": "^4.1.1",
+        "ethers": "^5.7.2",
+        "nodemon": "^2.0.20"
+    }
+}
