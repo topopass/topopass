@@ -6,5 +6,6 @@
   "editor.tabSize": 2,
   // Runs Prettier, then ESLint
   "editor.codeActionsOnSave": ["source.formatDocument", "source.fixAll.eslint"],
-  "cSpell.words": ["ethersproject", "rpc", "provider", "ethers", "NETWORK_TOPO", "TOPO", "TOPOPASS_ACCOUNT_HASH", "ciphertext"]
+  "cSpell.words": ["ethersproject", "rpc", "provider", "ethers", "NETWORK_TOPO", "TOPO", "TOPOPASS_ACCOUNT_HASH",
+    "ciphertext", "GET_BALANCE_TOPO"]
 }
