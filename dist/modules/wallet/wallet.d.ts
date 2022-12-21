@@ -10,7 +10,7 @@ export declare class WALLET_TOPO {
     walletMnemonic: any;
     password: string;
     constructor(network: NETWORK_TOPO);
-    LOGIN_TOPO(password: string): Promise<boolean>;
+    LOGIN_TOPO(account: string, password: string): Promise<boolean>;
     CREATE_SEED_PHRASE(options: any): Promise<unknown>;
     IMPORT_SEED_PHRASE(seedPhrase: string, options: any, password: string): Promise<RESPONSE_ACTION_AUTH>;
     GET_BALANCE_TOPO(): Promise<any>;

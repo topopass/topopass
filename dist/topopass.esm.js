@@ -358,10 +358,10 @@ var AUTH_TOPO = /*#__PURE__*/function () {
     this.hash = hash;
   }
   var _proto = AUTH_TOPO.prototype;
-  _proto.CHECK_AUTH = function CHECK_AUTH(password) {
+  _proto.CHECK_AUTH = function CHECK_AUTH(account, password) {
     return new Promise(function (resolve, reject) {
       try {
-        var ciphertext = localStorage.getItem(LOCAL_STORAGE.TOPOPASS_ACCOUNT_HASH) || 'U2FsdGVkX1/ARVszYy1NEMVLZuEL0fAquTwNDNk6ldIFZEQZzAw++j4hXKmlYwyUJq8wqbwLJ8wTFTs7k8hhACzPL+VpDRxCGTjMlFqiIERewE9fvP1x084OwTrMtXY+8415r0r/voO9txioKr2uHyACq+n7XTV2F3fruXBUiirkf7Gox0DYPEKZ6oiIz7QNkh9kOOZ10ESw4EuSppXFDg==';
+        var ciphertext = account;
         var decryptData = CryptoJS.AES.decrypt(ciphertext, password).toString(CryptoJS.enc.Utf8);
         if (decryptData) {
           var result = typeof decryptData === 'string' ? JSON.parse(decryptData) : decryptData;
@@ -469,7 +469,7 @@ var WALLET_TOPO = /*#__PURE__*/function () {
     this.password = '';
   }
   var _proto = WALLET_TOPO.prototype;
-  _proto.LOGIN_TOPO = function LOGIN_TOPO(password) {
+  _proto.LOGIN_TOPO = function LOGIN_TOPO(account, password) {
     var _this = this;
     return new Promise( /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(resolve, reject) {
@@ -478,7 +478,7 @@ var WALLET_TOPO = /*#__PURE__*/function () {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return _this.auth.CHECK_AUTH(password).then( /*#__PURE__*/function () {
+                return _this.auth.CHECK_AUTH(account, password).then( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(res) {
                     return _regeneratorRuntime().wrap(function _callee$(_context) {
                       while (1) {

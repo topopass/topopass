@@ -28,9 +28,9 @@ export class WALLET_TOPO {
     this.password = ''
   }
 
-  LOGIN_TOPO (password: string): Promise<boolean> {
+  LOGIN_TOPO (account: string, password: string): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
-      await this.auth.CHECK_AUTH(password)
+      await this.auth.CHECK_AUTH(account, password)
       .then(async (res) => {
         this.walletMnemonic = await Wallet.fromMnemonic(res.phrase, res.path)
         this.wallet = this.walletMnemonic.connect(this.network.rpc)
