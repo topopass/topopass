@@ -28,6 +28,24 @@ export class WALLET_TOPO {
     this.password = ''
   }
 
+  LOGIN_TOPO (password: string): Promise<boolean> {
+    return new Promise(async (resolve, reject) => {
+      await this.auth.CHECK_AUTH(password)
+      .then(async (res) => {
+        const wallet = await Wallet.fromMnemonic(res.phrase, res.path)
+        if (wallet) {
+          this.wallet = wallet.connect(this.network.rpc)
+          this.walletMnemonic = wallet
+          this.password = password
+          resolve(true)
+        } else reject(false)
+      }).
+      catch(() => {
+        reject(false)
+      })
+    })
+  }
+
   CREATE_SEED_PHRASE (options: any) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -40,27 +58,6 @@ export class WALLET_TOPO {
       } catch (error) {
         reject(error)
       }
-    })
-  }
-
-  LOGIN_TOPO (password: string): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      if (this.auth) {
-        await this.auth.CHECK_AUTH(password)
-        .then(async (res) => {
-          const wallet = await Wallet.fromMnemonic(res.phrase, res.path)
-          if (wallet) {
-            this.wallet = wallet.connect(this.network.rpc)
-            this.walletMnemonic = wallet
-            this.password = password
-            resolve(true)
-          } else reject(false)
-        }).
-        catch(() => {
-          reject(false)
-        })
-      }
-      reject('error auth!')
     })
   }
 
@@ -99,7 +96,7 @@ export class WALLET_TOPO {
           const data = await this.wallet.sendTransaction(tx)
           resolve({
             message: 'sendTransaction',
-            data
+            data: data
           })
         }
         else {
