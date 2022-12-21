@@ -32,13 +32,10 @@ export class WALLET_TOPO {
     return new Promise(async (resolve, reject) => {
       await this.auth.CHECK_AUTH(password)
       .then(async (res) => {
-        const wallet = await Wallet.fromMnemonic(res.phrase, res.path)
-        if (wallet) {
-          this.wallet = wallet.connect(this.network.rpc)
-          this.walletMnemonic = wallet
-          this.password = password
-          resolve(true)
-        } else reject(false)
+        this.walletMnemonic = await Wallet.fromMnemonic(res.phrase, res.path)
+        this.wallet = this.walletMnemonic.connect(this.network.rpc)
+        this.password = password
+        resolve(true)
       }).
       catch(() => {
         reject(false)
