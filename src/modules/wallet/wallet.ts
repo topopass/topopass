@@ -36,8 +36,8 @@ export class WALLET_TOPO {
         this.wallet = this.walletMnemonic.connect(this.network.rpc)
         this.password = password
         resolve(true)
-      }).
-      catch(() => {
+      })
+      .catch(() => {
         reject(false)
       })
     })
@@ -105,6 +105,12 @@ export class WALLET_TOPO {
       } catch (error) {
         
       }
+      
+    })
+  }
+
+  GET_TRANSACTIONS (): Promise<RESPONSE_GLOBAL> {
+    return new Promise((resolve, reject) => {
       
     })
   }
