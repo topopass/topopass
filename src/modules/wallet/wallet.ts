@@ -109,11 +109,11 @@ export class WALLET_TOPO {
     })
   }
 
-  GET_TRANSACTIONS (): Promise<RESPONSE_GLOBAL> {
-    return new Promise((resolve, reject) => {
+  // GET_TRANSACTIONS (): Promise<RESPONSE_GLOBAL> {
+  //   // return new Promise((resolve, reject) => {
       
-    })
-  }
+  //   // })
+  // }
 
   GET_LIST_CONTRACT (): Promise<RESPONSE_GLOBAL> {
     return new Promise((resolve, reject) => {

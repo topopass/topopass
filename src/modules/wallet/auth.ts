@@ -1,8 +1,7 @@
 import {
   LOCAL_STORAGE,
   RESPONSE_AUTH_WALLET,
-  RESPONSE_ACTION_AUTH,
-  RESPONSE_GLOBAL
+  RESPONSE_ACTION_AUTH
 } from '../../contanst'
 import CryptoJS from 'crypto-js'
 

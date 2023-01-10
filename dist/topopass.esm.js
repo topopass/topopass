@@ -657,7 +657,12 @@ var WALLET_TOPO = /*#__PURE__*/function () {
         return _ref5.apply(this, arguments);
       };
     }());
-  };
+  }
+  // GET_TRANSACTIONS (): Promise<RESPONSE_GLOBAL> {
+  //   // return new Promise((resolve, reject) => {
+  //   // })
+  // }
+  ;
   _proto.GET_LIST_CONTRACT = function GET_LIST_CONTRACT() {
     return new Promise(function (resolve, reject) {
       try {
