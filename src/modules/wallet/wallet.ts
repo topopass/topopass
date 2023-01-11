@@ -5,7 +5,8 @@ import { AUTH_TOPO } from "./auth";
 import { ADDRESS_WALLET } from "./address";
 import {
   utils,
-  Wallet
+  Wallet,
+  Contract
 } from 'ethers'
 import {
   RESPONSE_ACTION_AUTH,
@@ -73,12 +74,38 @@ export class WALLET_TOPO {
     })
   }
 
-  async GET_BALANCE_TOPO() {
-    const balance = await this.wallet.getBalance();
-    console.log('GET_BALANCE_TOPO', balance)
-    return balance
+  async GET_BALANCE_TOPO(address: string) {
+    if(!address) {
+      const balance = await this.wallet.getBalance();
+      return balance
+    } else {
+      const contract = await this.GET_CONTRACT(address)
+      return contract.balanceOf(address)
+    }
   }
 
+  GET_CONTRACT (address: string) {
+    // The ERC-20 Contract ABI, which is a common contract interface
+    // for tokens (this is the Human-Readable ABI format)
+    const daiAbi = [
+      // Some details about the token
+      "function name() view returns (string)",
+      "function symbol() view returns (string)",
+
+      // Get the account balance
+      "function balanceOf(address) view returns (uint)",
+
+      // Send some of your tokens to someone else
+      "function transfer(address to, uint amount)",
+
+      // An event triggered whenever anyone transfers to someone else
+      "event Transfer(address indexed from, address indexed to, uint amount)"
+    ];
+
+    // The Contract object
+    const contract = new Contract(address, daiAbi, this.network.provider);
+    return contract
+  }
 
   SEND_TRANSACTION (to: string, amount: string, gasLimit: number): Promise<RESPONSE_GLOBAL> {
     return new Promise(async (resolve, reject) => {

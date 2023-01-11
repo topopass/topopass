@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { ethers, Wallet, utils } from 'ethers';
+import { ethers, Wallet, utils, Contract } from 'ethers';
 import { randomBytes } from '@ethersproject/random';
 import { entropyToMnemonic } from '@ethersproject/hdnode';
 import CryptoJS from 'crypto-js';
@@ -624,30 +624,55 @@ var WALLET_TOPO = /*#__PURE__*/function () {
     }());
   };
   _proto.GET_BALANCE_TOPO = /*#__PURE__*/function () {
-    var _GET_BALANCE_TOPO = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5() {
-      var balance;
+    var _GET_BALANCE_TOPO = /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(address) {
+      var balance, contract;
       return _regeneratorRuntime().wrap(function _callee5$(_context5) {
         while (1) {
           switch (_context5.prev = _context5.next) {
             case 0:
-              _context5.next = 2;
+              if (address) {
+                _context5.next = 7;
+                break;
+              }
+              _context5.next = 3;
               return this.wallet.getBalance();
-            case 2:
+            case 3:
               balance = _context5.sent;
-              console.log('GET_BALANCE_TOPO', balance);
               return _context5.abrupt("return", balance);
-            case 5:
+            case 7:
+              _context5.next = 9;
+              return this.GET_CONTRACT(address);
+            case 9:
+              contract = _context5.sent;
+              return _context5.abrupt("return", contract.balanceOf(address));
+            case 11:
             case "end":
               return _context5.stop();
           }
         }
       }, _callee5, this);
     }));
-    function GET_BALANCE_TOPO() {
+    function GET_BALANCE_TOPO(_x8) {
       return _GET_BALANCE_TOPO.apply(this, arguments);
     }
     return GET_BALANCE_TOPO;
   }();
+  _proto.GET_CONTRACT = function GET_CONTRACT(address) {
+    // The ERC-20 Contract ABI, which is a common contract interface
+    // for tokens (this is the Human-Readable ABI format)
+    var daiAbi = [
+    // Some details about the token
+    "function name() view returns (string)", "function symbol() view returns (string)",
+    // Get the account balance
+    "function balanceOf(address) view returns (uint)",
+    // Send some of your tokens to someone else
+    "function transfer(address to, uint amount)",
+    // An event triggered whenever anyone transfers to someone else
+    "event Transfer(address indexed from, address indexed to, uint amount)"];
+    // The Contract object
+    var contract = new Contract(address, daiAbi, this.network.provider);
+    return contract;
+  };
   _proto.SEND_TRANSACTION = function SEND_TRANSACTION(to, amount, gasLimit) {
     var _this3 = this;
     return new Promise( /*#__PURE__*/function () {
@@ -696,7 +721,7 @@ var WALLET_TOPO = /*#__PURE__*/function () {
           }
         }, _callee6, null, [[0, 12]]);
       }));
-      return function (_x8, _x9) {
+      return function (_x9, _x10) {
         return _ref5.apply(this, arguments);
       };
     }());
