@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from '@ethersproject/providers';
-import { ethers, utils, Wallet } from 'ethers';
+import { ethers, Wallet, utils } from 'ethers';
 import { randomBytes } from '@ethersproject/random';
 import { entropyToMnemonic } from '@ethersproject/hdnode';
 import CryptoJS from 'crypto-js';
@@ -356,15 +356,18 @@ var LOCAL_STORAGE = {
 var AUTH_TOPO = /*#__PURE__*/function () {
   function AUTH_TOPO(hash) {
     this.hash = hash;
+    this.password = '';
   }
   var _proto = AUTH_TOPO.prototype;
   _proto.CHECK_AUTH = function CHECK_AUTH(account, password) {
+    var _this = this;
     return new Promise(function (resolve, reject) {
       try {
         var ciphertext = account;
         var decryptData = CryptoJS.AES.decrypt(ciphertext, password).toString(CryptoJS.enc.Utf8);
         if (decryptData) {
           var result = typeof decryptData === 'string' ? JSON.parse(decryptData) : decryptData;
+          _this.password = password;
           resolve(result);
         } else reject({
           phrase: null,
@@ -377,12 +380,12 @@ var AUTH_TOPO = /*#__PURE__*/function () {
     });
   };
   _proto.SET_AUTH = function SET_AUTH(mnemonic, password) {
-    var _this = this;
+    var _this2 = this;
     return new Promise(function (resolve, reject) {
       try {
         var ciphertext = CryptoJS.AES.encrypt(mnemonic, password).toString();
         localStorage.setItem(LOCAL_STORAGE.TOPOPASS_ACCOUNT_HASH, ciphertext);
-        _this.hash = ciphertext;
+        _this2.hash = ciphertext;
         resolve({
           message: 'Create auth success!',
           data: ciphertext
@@ -394,6 +397,46 @@ var AUTH_TOPO = /*#__PURE__*/function () {
         });
       }
     });
+  };
+  _proto.SIGNUP = function SIGNUP(seedPhrase, password) {
+    return new Promise( /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(resolve, reject) {
+        var wallet, ciphertext;
+        return _regeneratorRuntime().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                _context.next = 3;
+                return Wallet.fromMnemonic(seedPhrase);
+              case 3:
+                wallet = _context.sent;
+                ciphertext = CryptoJS.AES.encrypt(JSON.stringify(wallet.mnemonic), password).toString();
+                localStorage.setItem(LOCAL_STORAGE.TOPOPASS_ACCOUNT_HASH, ciphertext);
+                resolve({
+                  message: 'SignUp success',
+                  data: ciphertext
+                });
+                _context.next = 12;
+                break;
+              case 9:
+                _context.prev = 9;
+                _context.t0 = _context["catch"](0);
+                reject({
+                  message: 'SignUp failed',
+                  data: null
+                });
+              case 12:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, null, [[0, 9]]);
+      }));
+      return function (_x, _x2) {
+        return _ref.apply(this, arguments);
+      };
+    }());
   };
   return AUTH_TOPO;
 }();
